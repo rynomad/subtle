@@ -13,5 +13,8 @@
     "promise"
   ],
   "author": "Ryan Bennett",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "node-forge": "^0.6.20"
+  }
 }
