@@ -1,4 +1,4 @@
-var forge = require("node-forge");
+var forge = require("node-forge") || FORGE;
 var CryptoKey = require("../CryptoKey.js")
 
 var subtleToForge = {
@@ -9,16 +9,15 @@ var subtleToForge = {
 }
 var makeUsage = {
   sign: function makeSign(key){
-    return function RSASSA_SIGN(buf, alg){
-      var forgehashkey = subtleToForge[alg.hash.name]
-      var md = forge.md[forgehashkey].create();
+    return function RSASSA_SIGN(alg,buf){
+      var md = forge.md.sha256.create();
       md.update(buf.toString("binary"));
       return new Buffer(key.sign(md),"binary");
     };
   },
   verify : function makeVerify(key){
-    return function RSASSA_VERIFY(buf, sig){
-
+    return function RSASSA_VERIFY(alg,buf, sig){
+      console.log("RSAVERIFY", alg, buf.length, sig.length)
       var md = forge.md.sha256.create();
       md.update(buf.toString("binary"));
       var bytes = md.digest().bytes()

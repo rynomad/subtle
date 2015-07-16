@@ -1,7 +1,9 @@
-var verify = function verify(){
-  return new Promise(function rejecter(resolve,reject){
-    reject(new Error("operation not supported"));
-  });
+var verify = function verify(alg, key, buf,sig, nonce){
+  console.log("VERIFY", nonce)
+  if (!key._verify)
+    return Promise.reject("not a valid verify key", nonce)
+  else
+    return Promise.resolve(key._verify(alg, buf,sig, nonce));
 };
 
 module.exports = verify;

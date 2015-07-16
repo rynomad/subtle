@@ -9,12 +9,12 @@ var subtleToForge = {
 }
 var makeUsage = {
   encrypt: function makeEncrypt(key){
-    return function RSA_OAEP_ENCRYPT(buf){
+    return function RSA_OAEP_ENCRYPT(alg,buf){
       return new Buffer(key.encrypt(buf.toString("binary"), "RSA-OAEP"),"binary");
     };
   },
   decrypt : function makeDecrypt(key){
-    return function RSA_OAEP_DECRYPT(buf){
+    return function RSA_OAEP_DECRYPT(alg,buf){
       return new Buffer(key.decrypt(buf.toString("binary"), "RSA-OAEP"),"binary");
     }
   }

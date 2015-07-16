@@ -4,14 +4,16 @@
 var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
   var self = this;
   this.usages = []
+  console.log("cryptkey struct begin")
 
   Object.keys(uses).forEach(function(use){
     self.usages.push(use)
-    self["_"+use] = function(buf, non){
+    self["_"+use] = function(){
+      var non = arguments[arguments.length - 1]
       if (non != nonce)
         return Promise.reject("Unauthorized")
       else
-        return Promise.resolve(uses[use].apply({},[buf]));
+        return Promise.resolve(uses[use].apply({},arguments));
     }
   });
 
@@ -25,7 +27,9 @@ var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
     }
     this.exportable = true;
   }
+  console.log("CryptKey struct end")
   this.type = type;
+  return this;
 }
 
 module.exports = CryptoKey;

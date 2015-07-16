@@ -13,12 +13,24 @@
     "promise"
   ],
   "browser": {
-    "./src/use_node.js": "./src/use_browser.js"
+    "./src/use_node.js": "./src/use_browser.js",
+    "node-forge": "./forgeless.js"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "./forge.min.js": "forge"
   },
   "author": "Ryan Bennett",
   "license": "MIT",
   "dependencies": {
-    "node-forge": "^0.6.20"
+    "browserify": "^10.2.6",
+    "browserify-shim": "^3.8.9",
+    "node-forge": "^0.6.20",
+    "sjcl": "^1.0.3"
   },
   "devDependencies": {
     "chext": "0.0.1",

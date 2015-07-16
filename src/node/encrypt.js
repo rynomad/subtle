@@ -5,7 +5,7 @@ var encrypt = function encrypt(alg, key, data, nonce){
   if (!key._encrypt)
     return Promise.reject("Unsupported usage for that key")
   else
-    return key._encrypt(data, nonce);
+    return key._encrypt(alg,data, nonce);
 };
 
 
