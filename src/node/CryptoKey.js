@@ -1,22 +1,28 @@
 //This Class represents a CryptoKey a la w3c webCrypto API
 
 
-var CryptoKey = function Cryptokey(type, key, export, usage){
+var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
   var self = this;
-  var nonce = arguments.pop()
   this.usages = []
 
-  Object.keys(usage).forEach(function(use){
-    this.usages.push(use)
-    self["_"+use] = function(){
-      if (arguments.pop() != nonce)
+  Object.keys(uses).forEach(function(use){
+    self.usages.push(use)
+    self["_"+use] = function(buf, non){
+      if (non != nonce)
         return Promise.reject("Unauthorized")
       else
-        return usage[use].apply({},arguments)
-  }
+        return Promise.resolve(uses[use].apply({},[buf]));
+    }
+  });
 
-  if (typeof export === "function"){
-    this._export = export;
+  if (typeof exporter === "function"){
+    this._export = function(){
+      console.log("export called", arguments)
+      if (arguments[arguments.length-1] != nonce)
+        return Promise.reject("Unauthorized")
+      else
+        return exporter.apply({}, arguments);
+    }
     this.exportable = true;
   }
   this.type = type;

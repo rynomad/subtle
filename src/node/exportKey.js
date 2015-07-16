@@ -1,6 +1,11 @@
-var exportKey = function exportKey(){
+var exportKey = function exportKey(format, key, nonce){
+  var args = arguments;
+  console.log('exportKey args', nonce)
   return new Promise(function rejecter(resolve,reject){
-    reject(new Error("operation not supported"));
+    if (!key._export)
+      reject(new Error("operation not supported"));
+    else
+      resolve(key._export.apply({},args))
   });
 };
 

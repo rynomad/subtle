@@ -1,13 +1,14 @@
-var forge     = require("node-forge")
-  , CryptoKey = require("./CryptoK.js");
 
 var Generator = {}
-Generator.["RSA-OAEP"] = Generator["RSASSA-PKCS1-v1_5"] = Generator["RSAAES-PKCS1-v1_5"] = require("./algorithms/RSA.js").Generator
+Generator["RSA-OAEP"] = require("./algorithms/RSA-OAEP.js").generateKey;
+Generator["RSASSA-PKCS1-v1_5"] = require("./algorithms/RSASSA-PKCS1-v1_5.js").generateKey;
 
 var generateKey = function generateKey(algorithm){
+  console.log("args", algorithm)
+  var args = arguments
   return new Promise(function rejecter(resolve,reject){
     if (Generator[algorithm.name])
-      return Generator[algorithm.name].apply(null, arguments);
+      return resolve(Generator[algorithm.name].apply(null, args));
     else
       return reject(new Error("Algorithm not supported"));
   });

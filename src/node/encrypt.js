@@ -1,7 +1,12 @@
-var encrypt = function encrypt(){
-  return new Promise(function rejecter(resolve,reject){
-    reject(new Error("operation not supported"));
-  });
+
+
+var encrypt = function encrypt(alg, key, data, nonce){
+  var args = arguments;
+  if (!key._encrypt)
+    return Promise.reject("Unsupported usage for that key")
+  else
+    return key._encrypt(data, nonce);
 };
+
 
 module.exports = encrypt;
