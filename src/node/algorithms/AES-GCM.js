@@ -4,7 +4,7 @@ var CryptoKey = require("../CryptoKey")
 
 function checkAlgorithmAndUsage(algorithm, usages){
   for (var i in usages)
-    if ((["encrypt","decrypt"]).indexOf(usages[1]) < 0)
+    if ((["encrypt","decrypt"]).indexOf(usages[i]) < 0)
       throw new Error("invalid usages")
 }
 
