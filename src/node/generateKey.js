@@ -2,6 +2,7 @@
 var Generator = {}
 Generator["RSA-OAEP"] = require("./algorithms/RSA-OAEP.js").generateKey;
 Generator["RSASSA-PKCS1-v1_5"] = require("./algorithms/RSASSA-PKCS1-v1_5.js").generateKey;
+Generator["ECDH"] = require("./algorithms/ECDH").generateKey;
 
 var generateKey = function generateKey(algorithm){
   console.log("args", algorithm)

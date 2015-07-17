@@ -1,4 +1,4 @@
-var verify = function verify(alg, key, buf,sig, nonce){
+var verify = function verify(alg, key, sig,buf, nonce){
   console.log("VERIFY", nonce)
   if (!key._verify)
     return Promise.reject("not a valid verify key", nonce)

@@ -5,7 +5,7 @@ var exportKey = function exportKey(format, key, nonce){
     if (!key._export)
       reject(new Error("operation not supported"));
     else
-      resolve(key._export.apply({},args))
+      resolve(key._export.apply({},[format, key, nonce]))
   });
 };
 

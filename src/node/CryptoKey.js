@@ -11,7 +11,7 @@ var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
     self["_"+use] = function(){
       var non = arguments[arguments.length - 1]
       if (non != nonce)
-        return Promise.reject("Unauthorized")
+        return Promise.reject("Unauthorized use")
       else
         return Promise.resolve(uses[use].apply({},arguments));
     }
@@ -19,9 +19,10 @@ var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
 
   if (typeof exporter === "function"){
     this._export = function(){
-      console.log("export called", arguments)
-      if (arguments[arguments.length-1] != nonce)
-        return Promise.reject("Unauthorized")
+      console.log("export called", arguments, nonce)
+      var non = arguments[arguments.length-1]
+      if ( non != nonce)
+        return Promise.reject("Unauthorized export")
       else
         return exporter.apply({}, arguments);
     }
