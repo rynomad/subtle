@@ -119,7 +119,7 @@ function generateKey(algorithm, exportable, usages, nonce){
   if (err){
     return Promise.reject(err)
   } else {
-    keys = makeKeyPair(algorithm)
+    var keys = makeKeyPair(algorithm)
     console.log("made keypair")
     return createCryptoKeyPair(keys, exportable, usages, nonce);
   }
