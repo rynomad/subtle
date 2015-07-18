@@ -14,15 +14,12 @@
   ],
   "browser": {
     "./src/use_node.js": "./src/use_browser.js",
-    "node-forge": "./forgeless.js"
+    "node-forge": "./src/forgeless.js"
   },
   "browserify": {
     "transform": [
       "browserify-shim"
     ]
-  },
-  "browserify-shim": {
-    "./forge.min.js": "forge"
   },
   "author": "Ryan Bennett",
   "license": "MIT",
