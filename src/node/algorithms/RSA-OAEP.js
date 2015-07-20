@@ -25,14 +25,16 @@ module.exports = {
       formats : [Algorithm.formats.spki],
       usage   : {
         encrypt   : createEncrypt
-      }
+      },
+      returnLabel : "publicKey"
     },
     private : {
       label   : "private",
       formats : [Algorithm.formats.pkcs8],
       usage   : {
         decrypt   : createDecrypt
-      }
+      },
+      returnLabel : "privateKey"
     }
   },
   usages : {
