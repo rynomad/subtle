@@ -67,6 +67,5 @@ function checkParams(format, algorithm, usages){
     throw new Error("Unsupported or missing hash name");
   if (!Buffer.isBuffer(algorithm.publicExponent))
     throw new Error("algorithm.publicExponent not a Buffer source");
-  if (typeof algorithm.modulousLength !== "number")
-    throw new Error("must provide modulousLength")
+
 }
