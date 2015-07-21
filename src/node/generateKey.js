@@ -4,6 +4,7 @@ Generator["RSA-OAEP"] = require("./algorithms/RSA-OAEP.js").generateKey;
 Generator["RSASSA-PKCS1-v1_5"] = require("./algorithms/RSASSA-PKCS1-v1_5.js").generateKey;
 Generator["ECDH"] = require("./algorithms/ECDH").generateKey;
 var Algorithms = require("./algorithms/index.js");
+var CryptoKey = require("./CryptoKey.js")
 
 function checkParams(algorithm,usages){
   if (!(algorithm.name && Algorithms[algorithm.name]))
@@ -11,7 +12,7 @@ function checkParams(algorithm,usages){
 
   var alg = Algorithms[algorithm.name];
 
-  alg.checkParams(algorithm);
+  alg.checkParams("generate",algorithm);
 
   for (var i in usages)
     if (!(alg.usages[usages[i]]))
@@ -21,35 +22,46 @@ function checkParams(algorithm,usages){
 }
 
 function generateKey(algorithm, exportable, usages, nonce){
-  return new Promise(function rejecter(resolve,reject){
+  return new Promise(function generateKey_Promise(resolve,reject){
     checkParams(algorithm, usages);
 
     var _alg    = Algorithms[algorithm.name]
-      , _key    = _alg.generate(algorithm);
-      , _exp    = (exportable) ? _alg.createExporter(_key) : null
-      , _ret    = {}
+      , _key    = _alg.generate(algorithm)
+      , _scaf   = {}
       , _res    = {}
-      , _types  = []
+      , _types  = [];
 
+    //iterate through usages
     for (var i in usages){
-      if (_types.indexOf(_alg[usages[i].label]) < 0)
-        _types.push(_alg[usages[i]].label);
 
+      //iterate through key types associated with usage
+      for (var j in _alg.usages[usages[i]]){
 
+        //check if usage is implimented for this key type
+        if (_alg.usages[usages[i]][j].usage[usages[i]]){
 
-    for (var j in _types){
-      _ret[_types[j]] = {
-        _uses : {}
-        _exp  : (exportable) ? _alg.createExporter(_key, _types[j]) : null
-      };
-      for (var k in usages)
-        if (_alg[_types[j]].usages[usages[k]])
-          _ret[_types[j]].uses[usages[k]] = _alg[_types[j]].usages[usages[k]](_key);
+          //create or retrieve a scaffold for the key type
+          _scaf[_alg.usages[usages[i]][j].label] = _scaf[_alg.usages[usages[i]].label]
+                                                || { _uses : {}
+                                                   , _exp  : (exportable) ? _alg.createExporter(_alg.usages[usages[i]][j].label, _key)
+                                                                          : null
+                                                   };
 
-      _res[_alg[_types[j]].returnLabel] = new CryptoKey(_key, _types[j], _ret[_types[j]]._uses, nonce)
+          //attach the usage to the scaffold
+          _scaf[_alg.usages[usages[i]][j].label]._uses[usages[i]] = _alg.usages[usages[i]][j].usage[usages[i]](_key)
+
+          //move on to the next usage
+          break;
+        }
+      }
     }
 
-    resolve(_res);
+    //construct the return object from the scaffold
+    Object.keys(_scaf).forEach(function(type){
+      _res[_alg.types[type].returnLabel] = new CryptoKey(_key, type, _scaf[type]._exp, _scaf[type]._uses, nonce);
+    })
+
+    resolve(_res)
   });
 }
 
