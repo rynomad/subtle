@@ -1,52 +1,18 @@
-var forge = require("node-forge")
+var Algorithm = require("./abstract")("RSA-OAEP")
+  , forge     = require("node-forge")
   , pkcsPad1  = new Buffer([48, 130])
-  , pkcsPad2  = new Buffer([2, 1, 0, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 1, 5, 0, 4, 130]);
+  , pkcsPad2  = new Buffer([2, 1, 0, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 1, 5, 0, 4, 130])
 
-module.exports = {
-  name : "RSA-OAEP",
-  formats : {
-    raw  : false,
-    jwk  : false,
-    spki : {
-      import : spki_import,
-      export : spki_export,
-      types  : [Algorithm.types.public]
-    },
-    pkcs8 : {
-      import : pkcs8_import,
-      export : pkcs8_export,
-      types  : [Algorithm.types.private]
+Algorithm.formats.spki.import = spki_import;
+Algorithm.formats.spki.export = spki_export;
+Algorithm.formats.pkcs8.import = pkcs8_import;
+Algorithm.formats.pkcs8.export = pkcs8_export;
+Algorithm.types.public.usage.encrypt = createEncrypt;
+Algorithm.types.private.usage.decrypt = createDecrypt;
+Algorithm.generate = generate;
+Algorithm.checkParams = checkParams;
 
-    }
-  },
-  types : {
-    public  : {
-      label   : "public",
-      formats : [Algorithm.formats.spki],
-      usage   : {
-        encrypt   : createEncrypt
-      },
-      returnLabel : "publicKey"
-    },
-    private : {
-      label   : "private",
-      formats : [Algorithm.formats.pkcs8],
-      usage   : {
-        decrypt   : createDecrypt
-      },
-      returnLabel : "privateKey"
-    }
-  },
-  usages : {
-    sign    : false,
-    verify  : false,
-    encrypt : Algorithm.types.public,
-    decrypt : Algorithm.types.private
-  },
-  generate        : generate,
-  checkParams     : checkParams,
-  createExporter  : createExporter
-};
+module.exports = Algorithm;
 
 function pkcs8_pad(privateBytes){
   var off1 = new Buffer([Math.floor(secret.length / 256),((secret.length + 22) % 256) ])
@@ -59,7 +25,7 @@ function pkcs8_unpad(privateBytes){
 }
 
 function pkcs8_import(privateBytes){
-  return { privateKey : forge.pki.privateKeyFromAsn1(forge.asn1.fromDer(pkcs8_unpad(privateBytes).toString("binary")))}:
+  return { privateKey : forge.pki.privateKeyFromAsn1(forge.asn1.fromDer(pkcs8_unpad(privateBytes).toString("binary")))};
 }
 
 function pkcs8_export(privateKey){
@@ -98,14 +64,9 @@ function generate(algorithm){
 
 function checkParams(format, algorithm, usages){
   if (!(algorithm.hash && (algorithm.hash.name === "SHA-256")))
-    throw new Error("Unsupported hash");
-}
-
-function createExporter(type, key){
-  return function exportKey(format){
-    if (Algorithm.formats[format].types.indexOf(Algorithm.types[type]) < 0)
-      throw new Error("can't export " + type + " key  in " + format + " format.");
-
-    return Algorithm.formats[format].export(key);
-  };
+    throw new Error("Unsupported or missing hash name");
+  if (!Buffer.isBuffer(algorithm.publicExponent))
+    throw new Error("algorithm.publicExponent not a Buffer source");
+  if (typeof algorithm.modulousLength !== "number")
+    throw new Error("must provide modulousLength")
 }
