@@ -27,7 +27,7 @@ var importKey = function importKey(format,key, algorithm, exportable, usages, no
     var _alg    = Algorithms[algorithm.name]
       , _format = _alg.formats[format]
       , _types  = _format.types
-      , _key    = _format.import(key)
+      , _key    = _format.import(key, algorithm)
       , _exp    = (exportable) ? _alg.createExporter(_key) : null
       , _uses   = {}
       , _type;

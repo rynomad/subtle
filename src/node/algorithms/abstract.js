@@ -138,9 +138,9 @@ function createAlgorithm(name) {
   decrypt.push(secret);
   decrypt.push(private);
 
-  deriveKey.push(secret);
+  deriveKey.push(private);
 
-  deriveBits.push(secret);
+  deriveBits.push(private);
 
   return Algorithm;
 }

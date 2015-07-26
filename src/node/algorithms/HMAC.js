@@ -1,90 +1,32 @@
-var NodeCrypto = require("crypto")
-var CryptoKey = require("../CryptoKey.js")
+var CryptoKey  = require("../CryptoKey.js")
+  , Algorithm  = require("./abstract")("HMAC")
+  , NodeCrypto = require("crypto")
+  , forge      = require("node-forge")
+  , private    = Algorithm.types.private.usage
+  , public     = Algorithm.types.public.usage;
 
-var subtleToCrypto = {
-  hash :{
-    "SHA-256" : "sha256",
-    "SHA-1": "sha1"
-  }
+private.sign  = createSign;
+public.verify = createVerify;
+
+function createSign(key, hash){
+  return function HMAC_SIGN(alg, buf){
+    var hashKey = alg.hash.name.replace(/-/g, '').toLowerCase();
+    return NodeCrypto.createHmac(hashKey, key)
+                      .update(buf)
+                      .digest();
+  };
 }
 
-var makeUsage = {
-  "sign" : function makeSign(key, hash){
-    return function(alg, buf){
-      var mac = NodeCrypto.createHmac(subtleToCrypto.hash[hash.name], key)
-                          .update(buf)
-                          .digest();
-      return mac;
-    }
-  },
-  "verify" : function makeVerify(key, hash){
-    return function(alg, buf, sig){
-      return (!Buffer.compare(sig, makeUsage["sign"](key, hash)(alg, buf)))
-    }
-  }
+function createVerify(key, hash){
+  return function HMAC_VERIFY(alg, buf, sig){
+    return (!Buffer.compare(sig, makeUsage["sign"](key, hash)(alg, buf)));
+  };
 }
 
-function createCryptoKey(key, type, exportable, usage, nonce){
-  var uses = {}, exporter;
-  if (usage)
-    uses[usage] = makeUsage[usage](key);
-  if (exportable)
-    exporter = makeExporter(type,key);
-
-  console.log("OAEP KEY")
-  return new CryptoKey(key, type, exporter, uses, nonce)
+function raw_import(bytes){
+  return bytes;
 }
 
-function generateKey(){
-  throw new Error("not implimented")
-}
-
-var Import = {
-  "raw" : function (bytes){
-    return bytes;
-  }
-}
-
-var Export = {
-  "raw" :function (){}
-}
-
-var makeExporter = function makeExporter(key){
-  return function exportKey(format){
-    return (Export[format]) ? Export[type][format](key)
-                            : new Error("unsupported export format");
-  }
-};
-
-function checkParams(format,algorithm, usages){
-  if (!(algorithm.hash && algorithm.hash.name))
-    throw new Error("missing hash or hash.name field")
-  if (!forge.md[subtleToCrypto.hash[algorithm.hash.name]])
-    throw new Error("invalid hash name string")
-  if (!Import[format])
-    throw new Error("unsupported import format")
-  for (var i in usages)
-    if (!makeUsage[usages[i]])
-      throw new Error("cannot make key with that usage")
-}
-
-function importKey(format, bytes, algorithm, exportable, usages, nonce){
-  console.log("HMAC import")
-  checkParams(format, algorithm, usages)
-
-  var key = Import[format](bytes)
-  var uses = {}
-  for (var i in usages)
-    uses[usages[i]] = makeUsage[usages[i]](key, algorithm.hash);
-
-  exportable = (exportable) ? makeExporter(key) : null
-
-
-  return new CryptoKey(key, "secret", exportable, uses, nonce);
-
-}
-
-module.exports = {
-  importKey : importKey
-
+function raw_export(key){
+  return key;
 }

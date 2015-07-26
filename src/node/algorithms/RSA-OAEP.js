@@ -29,8 +29,8 @@ function createDecrypt(Key){
 
 
 function checkParams(format, algorithm, usages){
-  if (!(algorithm.hash && (algorithm.hash.name === "SHA-256")))
-    throw new Error("Unsupported or missing hash name");
+  //if (!(algorithm.hash && (algorithm.hash.name === "SHA-256")))
+    //throw new Error("Unsupported or missing hash name");
   //if (!Buffer.isBuffer(algorithm.publicExponent))
     //throw new Error("algorithm.publicExponent not a Buffer source");
 
