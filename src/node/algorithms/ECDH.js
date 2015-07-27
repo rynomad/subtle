@@ -13,8 +13,9 @@ module.exports = Algorithm;
 
 
 function createDeriveBits(Key){
-  return function ECDH_DERIVEBITS(publicKey,nonce){
-    return Key.PrivateKey.deriveSharedSecret(Algorithm.formats.raw.import(publicKey._export("raw", nonce)).PublicKey);
+  return function ECDH_DERIVEBITS(alg,length, nonce){
+    console.log("DERIVE", Key)
+    return Key.deriveSharedSecret(Algorithm.formats.raw.import(alg.public._export("raw", nonce), alg));
   };
 }
 
