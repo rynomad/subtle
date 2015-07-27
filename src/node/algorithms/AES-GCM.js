@@ -18,9 +18,8 @@ function getParams(alg, data){
 }
 
 function CRYPT(action, Key, alg, data){
-  var p = getParams(alg);
-
-  return new Buffer(sjcl.codec.hex.fromBits(sjcl.mode.gcm[action](Key, p.data , p.iv, p.aad, alg.tagLength)), 'hex');
+  var p = getParams(alg, data);
+  return new Buffer(sjcl.codec.hex.fromBits(sjcl.mode.gcm[action](Key, p.data , p.iv, p.add, alg.tagLength)), 'hex');
 }
 function createEncrypt(Key){
   return function ENCRYPT_AES_GCM(alg, data){
@@ -28,7 +27,7 @@ function createEncrypt(Key){
   };
 }
 
-function createDecrypt(key){
+function createDecrypt(Key){
   return function DECRYPT_AES_GCM(alg,data ){
     return CRYPT("decrypt", Key, alg, data);
   }
