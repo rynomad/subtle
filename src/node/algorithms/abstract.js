@@ -4,10 +4,13 @@ function throwError(){
 
 
 function createAlgorithm(name) {
-
+  //warn that there's no parameter checking
+  function checkParams(){
+    console.log("WARNING: " + name + "isn't checking parameters... bad things might happen");
+    return true;
+  }
   //generic exporter function
   function createExporter(type, key){
-    console.log("")
     return function exportKey(format){
       console.log(type)
       if (Algorithm.formats[format].types.indexOf(Algorithm.types[type]) < 0)
@@ -80,7 +83,7 @@ function createAlgorithm(name) {
         deriveBits : [],
       },
       generate        : throwError,
-      checkParams     : throwError,
+      checkParams     : checkParams,
       createExporter  : createExporter,
     }
 
@@ -120,6 +123,8 @@ function createAlgorithm(name) {
   jwk.types.push(private);
 
   raw.types.push(secret);
+  raw.types.push(private);
+  raw.types.push(public);
 
   spki.types.push(public);
 
