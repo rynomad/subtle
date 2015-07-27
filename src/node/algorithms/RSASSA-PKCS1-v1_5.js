@@ -15,18 +15,18 @@ private.sign  = createSign;
 
 module.exports = Algorithm;
 
-function createSign(key){
+function createSign(key, alg1){
   return function SIGN_RSASSA_PKCS1_v1_5(alg,buf){
-    var forgehashKey = alg.hash.name.replace(/-/g, '').toLowerCase();
+    var forgehashKey = alg1.hash.name.replace(/-/g, '').toLowerCase();
     var md = forge.md[forgehashKey].create();
     md.update(buf.toString("binary"));
     return new Buffer(key.privateKey.sign(md),"binary");
   };
 }
 
-function createVerify(key){
+function createVerify(key, alg1){
   return function RSASSA_VERIFY(alg,buf, sig){
-    var forgehashKey = alg.hash.name.replace(/-/g, '').toLowerCase();
+    var forgehashKey = alg1.hash.name.replace(/-/g, '').toLowerCase();
     var md = forge.md[forgehashKey].create();
     md.update(buf.toString("binary"));
     var bytes = md.digest().bytes()
