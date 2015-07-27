@@ -1,4 +1,4 @@
-var ecc        = require("ecc-jsbn")
+var ecc        = require("./ecc.js")
   , spkiECCPad = new Buffer("3056301006042b81047006082a8648ce3d030107034200","hex");
 
 function getCurveKey(namedCurve){
