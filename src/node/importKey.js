@@ -28,8 +28,8 @@ var importKey = function importKey(format,key, algorithm, exportable, usages, no
       , _format = _alg.formats[format]
       , _types  = _format.types
       , _key    = _format.import(key, algorithm)
-      , _exp    = (exportable) ? _alg.createExporter(_key) : null
       , _uses   = {}
+      , _exp
       , _type;
 
     //iterate through usages for the format, until we find the right usage creator
@@ -37,11 +37,18 @@ var importKey = function importKey(format,key, algorithm, exportable, usages, no
       //iterate through key types until we find the right usage
       for (var j in _types){
         if (_types[j].usage[usages[i]]){
-          _uses[usages[i]] = _types[j].usage[usages[i]](_key);
+          _uses[usages[i]] = _types[j].usage[usages[i]](_key, algorithm);
           _type = _types[j].label;
           break;
         }
       }
+
+    //special case, ECDH public keys have no usages
+    if (algorithm.name === "ECDH" && !usages.length)
+      _type = "public"
+
+    _exp = (exportable) ? _alg.createExporter(_type, _key) : null
+
     resolve(new CryptoKey(_key, _type, _exp, _uses, nonce ));
   });
 };
