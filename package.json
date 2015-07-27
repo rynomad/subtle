@@ -26,6 +26,7 @@
   "dependencies": {
     "browserify": "^10.2.6",
     "browserify-shim": "^3.8.9",
+    "ecc-jsbn": "0.0.1",
     "node-forge": "^0.6.20",
     "sjcl": "^1.0.3"
   },
