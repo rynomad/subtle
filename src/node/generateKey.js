@@ -48,7 +48,7 @@ function generateKey(algorithm, exportable, usages, nonce){
                                                    };
 
           //attach the usage to the scaffold
-          _scaf[_alg.usages[usages[i]][j].label]._uses[usages[i]] = _alg.usages[usages[i]][j].usage[usages[i]](_key)
+          _scaf[_alg.usages[usages[i]][j].label]._uses[usages[i]] = _alg.usages[usages[i]][j].usage[usages[i]](_key, algorithm)
 
           //move on to the next usage
           break;
@@ -60,6 +60,11 @@ function generateKey(algorithm, exportable, usages, nonce){
     Object.keys(_scaf).forEach(function(type){
       _res[_alg.types[type].returnLabel] = new CryptoKey(_key, type, _scaf[type]._exp, _scaf[type]._uses, nonce);
     })
+
+    //special case... ECDH public keys don't have they're own usage, but are still needed as params in deriveKey/Bits
+    if (algorithm.name === "ECDH")
+      _res["publicKey"] = new CryptoKey(_key, "public",_alg.createExporter("public", _key), {}, nonce);
+
 
     resolve(_res)
   });
