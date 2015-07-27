@@ -2,6 +2,7 @@ var Browser = require("./use_node.js")
 var OPS = ["generateKey", "importKey", "exportKey", "sign", "verify", "encrypt", "decrypt", "digest", "deriveKey", "deriveBits"]
 var nonce = require("crypto").randomBytes(64).toString("hex")
 global.FORGE = require("./forgeless.js")
+global.Promise =  require("polyfill-promise")
 var Subtle = {}
 var JS = {}
 JS.generateKey = require("./node/generateKey")
