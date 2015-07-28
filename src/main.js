@@ -19,7 +19,7 @@ JS.deriveBits = require("./node/deriveBits")
 function makeArgArray (args){
   var ar = []
   for (var i = 0; i < args.length;i++)
-    ar.push(args[i])
+    ar.push(Bufferize(args[i]))
 
   ar.push(nonce);
   return ar;
@@ -27,9 +27,11 @@ function makeArgArray (args){
 
 function Bufferize (result){
   if (result instanceof ArrayBuffer)
-    return new Buffer(new Uint8Array(result))
-  else
-    return result;
+    result = new Uint8Array(result);
+  if (result instanceof Uint8Array)
+    result = new Buffer(result);
+
+  return result;
 }
 function makeRoutine(routine){
   return function(){
