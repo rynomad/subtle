@@ -18,18 +18,12 @@
     "node-forge": "./src/forgeless.js",
     "./src/node/algorithms/shared/ecc.js": "./src/node/algorithms/shared/ecc.browser.js"
   },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
   "author": "Ryan Bennett",
   "license": "MIT",
   "dependencies": {
-    "browserify": "^10.2.6",
-    "browserify-shim": "^3.8.9",
     "ecc-jsbn": "0.0.1",
     "node-forge": "^0.6.20",
+    "polyfill-promise": "^4.0.1",
     "sjcl": "^1.0.3"
   },
   "devDependencies": {
