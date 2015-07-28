@@ -1,9 +1,10 @@
 {
   "name": "subtle",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "crypto.subtle for node.js",
   "main": "src/main.js",
   "scripts": {
+    "install": "./install.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -14,19 +15,15 @@
   ],
   "browser": {
     "./src/use_node.js": "./src/use_browser.js",
-    "node-forge": "./src/forgeless.js"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
+    "node-forge": "./src/forgeless.js",
+    "./src/node/algorithms/shared/ecc.js": "./src/node/algorithms/shared/ecc.browser.js"
   },
   "author": "Ryan Bennett",
   "license": "MIT",
   "dependencies": {
-    "browserify": "^10.2.6",
-    "browserify-shim": "^3.8.9",
+    "ecc-jsbn": "0.0.1",
     "node-forge": "^0.6.20",
+    "polyfill-promise": "^4.0.1",
     "sjcl": "^1.0.3"
   },
   "devDependencies": {

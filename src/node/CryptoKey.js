@@ -4,7 +4,7 @@
 var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
   var self = this;
   this.usages = []
-  console.log("cryptkey struct begin")
+  console.log("cryptkey struct begin", nonce)
 
   Object.keys(uses).forEach(function(use){
     self.usages.push(use)

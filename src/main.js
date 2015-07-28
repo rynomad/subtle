@@ -2,6 +2,7 @@ var Browser = require("./use_node.js")
 var OPS = ["generateKey", "importKey", "exportKey", "sign", "verify", "encrypt", "decrypt", "digest", "deriveKey", "deriveBits"]
 var nonce = require("crypto").randomBytes(64).toString("hex")
 global.FORGE = require("./forgeless.js")
+global.Promise =  require("polyfill-promise")
 var Subtle = {}
 var JS = {}
 JS.generateKey = require("./node/generateKey")
@@ -16,20 +17,26 @@ JS.deriveKey = require("./node/deriveKey")
 JS.deriveBits = require("./node/deriveBits")
 
 function makeArgArray (args){
-  console.log("make arg array", args.length)
   var ar = []
   for (var i = 0; i < args.length;i++)
-    ar.push(args[i])
+    ar.push(Bufferize(args[i]))
 
   ar.push(nonce);
-  console.log(ar)
   return ar;
 }
 
+function Bufferize (result){
+  if (result instanceof ArrayBuffer)
+    result = new Uint8Array(result);
+  if (result instanceof Uint8Array)
+    result = new Buffer(result);
+
+  return result;
+}
 function makeRoutine(routine){
   return function(){
     var routineArgs = makeArgArray(arguments)
-    return Browser(routine, arguments).catch(function useJScrypto(){
+    return Browser(routine, arguments).then(Bufferize).catch(function useJScrypto(){
       return (typeof JS[routine] === "function") ? JS[routine].apply(JS[routine],routineArgs)
                                                  : Promise.reject("unsupported operation");
     });
