@@ -2,7 +2,6 @@ var CryptoKey  = require("./CryptoKey")
   , Algorithms = require("./algorithms/index.js");
 
 function checkParams(format,key,algorithm,usages){
-  console.log("format", algorithm.name, Algorithms[algorithm.name])
   if (!(algorithm.name && Algorithms[algorithm.name]))
     throw new Error("unsupported or missing algorithm name")
 

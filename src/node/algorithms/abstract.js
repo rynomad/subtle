@@ -12,7 +12,6 @@ function createAlgorithm(name) {
   //generic exporter function
   function createExporter(type, key){
     return function exportKey(format){
-      console.log(type)
       if (Algorithm.formats[format].types.indexOf(Algorithm.types[type]) < 0)
         throw new Error("can't export " + type.label + " key  in " + format + " format.");
 

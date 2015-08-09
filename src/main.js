@@ -36,7 +36,8 @@ function Bufferize (result){
 function makeRoutine(routine){
   return function(){
     var routineArgs = makeArgArray(arguments)
-    return Browser(routine, arguments).then(Bufferize).catch(function useJScrypto(){
+    return Browser(routine, arguments).then(Bufferize).catch(function useJScrypto(er){
+      ////console.log("BROWSER FAILED",er, routineArgs)
       return (typeof JS[routine] === "function") ? JS[routine].apply(JS[routine],routineArgs)
                                                  : Promise.reject("unsupported operation");
     });

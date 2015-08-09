@@ -16,6 +16,7 @@ function spki_export(Key){
 }
 
 function raw_export(Key){
+  console.log("raw ecc export")
   return new Buffer(Key.PublicKey);
 }
 

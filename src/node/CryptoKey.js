@@ -4,7 +4,6 @@
 var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
   var self = this;
   this.usages = []
-  console.log("cryptkey struct begin", nonce)
 
   Object.keys(uses).forEach(function(use){
     self.usages.push(use)
@@ -19,7 +18,6 @@ var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
 
   if (typeof exporter === "function"){
     this._export = function(){
-      console.log("export called", arguments, nonce)
       var non = arguments[arguments.length-1]
       if ( non != nonce)
         return Promise.reject("Unauthorized export")
@@ -28,7 +26,6 @@ var CryptoKey = function Cryptokey(key,type, exporter, uses, nonce){
     }
     this.exportable = true;
   }
-  console.log("CryptKey struct end")
   this.type = type;
   return this;
 }
