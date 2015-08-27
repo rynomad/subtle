@@ -2,10 +2,12 @@
 
 export VERSION=`node -v`
 
-if [ "$VERSION" == "v3.0.0" ]
+if [ "${VERSION:0:2}" == "v3" ]
 then
     export PURE_JS=true
 fi
+
+echo $PURE_JS
 
 if [ "$PURE_JS" == "true" ]
 then
