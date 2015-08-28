@@ -1,6 +1,6 @@
 {
   "name": "subtle",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "crypto.subtle for node.js",
   "main": "src/main.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "browser": {
     "./src/use_node.js": "./src/use_browser.js",
     "node-forge": "./src/forgeless.js",
-    "./src/node/algorithms/shared/ecc.js": "./src/node/algorithms/shared/ecc.browser.js"
+    "./src/node/algorithms/shared/ecc.node.js": "./src/node/algorithms/shared/ecc.browser.js"
   },
   "author": "Ryan Bennett",
   "license": "MIT",
