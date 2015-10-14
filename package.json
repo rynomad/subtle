@@ -1,6 +1,6 @@
 {
   "name": "subtle",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "crypto.subtle for node.js",
   "main": "src/main.js",
   "scripts": {
