@@ -6,7 +6,7 @@ function throwError(){
 function createAlgorithm(name) {
   //warn that there's no parameter checking
   function checkParams(){
-    console.log("WARNING: " + name + "isn't checking parameters... bad things might happen");
+    //console.log("WARNING: " + name + "isn't checking parameters... bad things might happen");
     return true;
   }
   //generic exporter function
