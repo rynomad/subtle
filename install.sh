@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export VERSION=`node -v`
+export VERSION=`npm -v`
 
-if [ "${VERSION:0:2}" == "v3" ]
+if [ "${VERSION:0:1}" == "2" ]
 then
     export PURE_JS=true
 fi
