@@ -13,5 +13,5 @@ if [ "$PURE_JS" == "true" ]
 then
     echo "PURE JS"
 else
-    npm install git+https://github.com/rynomad/ecc.git
+    npm install git+https://github.com/jvanveen/ecc.git#feature/nan-2.1.0
 fi
