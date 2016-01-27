@@ -4,7 +4,7 @@
   "description": "crypto.subtle for node.js",
   "main": "src/main.js",
   "scripts": {
-    "install": "./install.sh",
+    "install": "node install.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
