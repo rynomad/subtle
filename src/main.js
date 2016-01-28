@@ -1,6 +1,7 @@
 var Browser = require("./use_node.js")
 var OPS = ["generateKey", "importKey", "exportKey", "sign", "verify", "encrypt", "decrypt", "digest", "deriveKey", "deriveBits"]
 var nonce = require("crypto").randomBytes(64).toString("hex")
+var Bufferize = require('./bufferize')
 global.FORGE = require("./forgeless.js")
 global.Promise =  require("polyfill-promise")
 var Subtle = {}
@@ -25,14 +26,6 @@ function makeArgArray (args){
   return ar;
 }
 
-function Bufferize (result){
-  if (result instanceof ArrayBuffer)
-    result = new Uint8Array(result);
-  if (result instanceof Uint8Array)
-    result = new Buffer(result);
-
-  return result;
-}
 function makeRoutine(routine){
   return function(){
     var routineArgs = makeArgArray(arguments)
