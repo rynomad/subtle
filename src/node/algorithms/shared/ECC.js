@@ -1,5 +1,5 @@
 var ecc        = require("./ecc.node.js")
-  , spkiECCPad = new Buffer("3056301006042b81047006082a8648ce3d030107034200","hex");
+  , spkiECCPad = new Buffer("3059301306072a8648ce3d020106082a8648ce3d030107034200","hex");
 
 function getCurveKey(namedCurve){
   return ("sec" + namedCurve.replace(/-/g, '').toLowerCase() + "r1");
@@ -16,7 +16,6 @@ function spki_export(Key){
 }
 
 function raw_export(Key){
-  console.log("raw ecc export")
   return new Buffer(Key.PublicKey);
 }
 
