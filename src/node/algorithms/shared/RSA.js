@@ -35,7 +35,7 @@ function generate(algorithm){
     pos++;
   }
 
-  return forge.rsa.generateKeyPair({bits: algorithm.modulousLength , e: exp});
+  return forge.rsa.generateKeyPair({bits: algorithm.modulusLength , e: exp});
 }
 
 
