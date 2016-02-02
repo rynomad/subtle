@@ -1,5 +1,5 @@
 var ecc        = require("./ecc.node.js")
-  , spkiECCPad = new Buffer("3059301306072a8648ce3d020106082a8648ce3d030107034200","hex");
+  , spkiECCPad = new Buffer("3059301306072a8648ce3d020106082a8648ce3d030107034200","hex")
   , pkcsPad1  = new Buffer("308187020100301306072A8648CE3D020106082A8648CE3D030107046D306B0201010420", "hex")
   , pkcsPad2  = new Buffer("A144034200", "hex");
 
