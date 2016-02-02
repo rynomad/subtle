@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "ecc-jsbn": "0.0.1",
+    "ecc-qj": "git+https://github.com/rynomad/ecc.git",
     "node-forge": "^0.6.20",
     "polyfill-promise": "^4.0.1",
     "sjcl": "^1.0.3"
