@@ -5,3 +5,4 @@ exports["RSASSA-PKCS1-v1_5"] = require("./RSASSA-PKCS1-v1_5");
 exports["HMAC"] = require("./HMAC")
 exports["AES-GCM"] = require("./AES-GCM")
 exports["ECDH"] = require("./ECDH")
+exports["ECDSA"] = require("./ECDSA")
