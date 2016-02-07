@@ -58,7 +58,12 @@ function generateKey(algorithm, exportable, usages, nonce){
 
     //construct the return object from the scaffold
     Object.keys(_scaf).forEach(function(type){
-      _res[_alg.types[type].returnLabel] = new CryptoKey(_key, type, _scaf[type]._exp, _scaf[type]._uses, nonce);
+      if (_alg.types[type].returnLabel) {
+        _res[_alg.types[type].returnLabel] = new CryptoKey(_key, type, _scaf[type]._exp, _scaf[type]._uses, nonce);
+      }
+      else {
+        _res = new CryptoKey(_key, type, _scaf[type]._exp, _scaf[type]._uses, nonce);
+      }
     })
 
     //special case... ECDH public keys don't have they're own usage, but are still needed as params in deriveKey/Bits
