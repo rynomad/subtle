@@ -1,6 +1,6 @@
 {
   "name": "subtle",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "crypto.subtle for node.js",
   "main": "src/main.js",
   "scripts": {
@@ -25,6 +25,9 @@
     "node-forge": "^0.6.20",
     "polyfill-promise": "^4.0.1",
     "sjcl": "^1.0.3"
+  },
+  "optionalDependencies":{
+    "ecc-qj" : "git+https://github.com/rynomad/ecc.git"
   },
   "devDependencies": {
     "chext": "0.0.1",
