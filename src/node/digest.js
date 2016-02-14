@@ -4,10 +4,11 @@ var subtleToForge = {
 }
 
 var digest = function digest(alg, data){
-  if (!subtleToForge[alg.name])
+  var name = (typeof alg === 'object') ? alg.name : alg
+  if (!subtleToForge[name])
     return Promise.reject("unsupported hashing algorithm")
   else{
-    var md = forge.md[subtleToForge[alg.name]].create()
+    var md = forge.md[subtleToForge[name]].create()
     md.update(data.toString("binary"))
 
     return new Buffer(md.digest().bytes(), "binary")
