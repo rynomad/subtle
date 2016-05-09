@@ -34,18 +34,30 @@ function createSign(key, alg1) {
   };
 }
 
+function pad(buffer) {
+  if (buffer[0] & 0x80) {
+    // If the value starts with 1, we prepend a 0 to assure it is interpreted as a positive number.
+    return Buffer.concat([new Buffer([0]), buffer])
+  }
+  else {
+    return buffer;
+  }
+}
+
 function createVerify(key, alg1){
   return function ECDSA_VERIFY(alg, buf, sig) {
     var forgehashKey = alg.hash.name.replace(/-/g, '').toLowerCase();
     var md = forge.md[forgehashKey].create();
     md.update(buf.toString("binary"));
     var digest = md.digest().getBytes();
-    var sigPart1 = sig.slice(0, 32);
-    var sigPart2 = sig.slice(32, 64);
+    var sigPart1 = pad(sig.slice(0, 32));
+    var sigPart2 = pad(sig.slice(32, 64));
     var asn1 = forge.asn1;
+    var integer1 = sigPart1.toString("binary");
+    var integer2 = sigPart2.toString("binary");
     var derSignature = asn1.toDer(asn1.create(asn1.Class.UNIVERSAL, asn1.Type.SEQUENCE, true, [
-      asn1.create(asn1.Class.UNIVERSAL, asn1.Type.INTEGER, false, sigPart1.toString("binary")),
-      asn1.create(asn1.Class.UNIVERSAL, asn1.Type.INTEGER, false, sigPart2.toString("binary"))
+      asn1.create(asn1.Class.UNIVERSAL, asn1.Type.INTEGER, false, integer1),
+      asn1.create(asn1.Class.UNIVERSAL, asn1.Type.INTEGER, false, integer2)
     ])).getBytes();
     return key.verifySignature(new Buffer(digest, 'binary'), new Buffer(derSignature, 'binary'));
   }
