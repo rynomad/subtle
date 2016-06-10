@@ -20,6 +20,11 @@
   },
   "author": "Ryan Bennett",
   "license": "MIT",
+  "homepage": "https://github.com/rynomad/subtle",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rynomad/subtle.git"
+  },
   "dependencies": {
     "ecc-jsbn": "0.0.1",
     "node-forge": "^0.6.20",
