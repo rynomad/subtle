@@ -1,6 +1,6 @@
 {
   "name": "subtle",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "crypto.subtle for node.js",
   "main": "src/main.js",
   "scripts": {
@@ -20,6 +20,11 @@
   },
   "author": "Ryan Bennett",
   "license": "MIT",
+  "homepage": "https://github.com/rynomad/subtle",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rynomad/subtle.git"
+  },
   "dependencies": {
     "ecc-jsbn": "0.0.1",
     "ecc-qj": "git+https://github.com/rynomad/ecc.git",
@@ -27,8 +32,10 @@
     "polyfill-promise": "^4.0.1",
     "sjcl": "^1.0.3"
   },
+  "optionalDependencies":{
+    "ecc-qj" : "git+https://github.com/rynomad/ecc.git"
+  },
   "devDependencies": {
-    "chext": "0.0.1",
     "glob": "^5.0.14",
     "gulp": "^3.9.0",
     "gulp-jsdoc": "^0.1.4",

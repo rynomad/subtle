@@ -1,5 +1,6 @@
 var sjcl      = require("sjcl")
   , Algorithm = require("./abstract")("AES-GCM")
+  , Bufferize = require('./../../bufferize')
   , AES       = require("./shared/AES")
   , secret = Algorithm.types.secret.usage
 
@@ -11,8 +12,13 @@ secret.decrypt = createDecrypt;
 module.exports = Algorithm;
 
 function getParams(alg, data){
-  return { iv   : sjcl.codec.hex.toBits(alg.iv.toString('hex'))
-         , add  : sjcl.codec.hex.toBits(alg.additionalData.toString('hex'))
+  var iv = Bufferize(alg.iv);
+  var additionalData = alg.additionalData ? Bufferize(alg.additionalData) : new Buffer([]);
+
+  data = data ? Bufferize(data) : new Buffer([]);
+
+  return { iv   : sjcl.codec.hex.toBits(iv.toString('hex'))
+         , add  : sjcl.codec.hex.toBits(additionalData.toString('hex'))
          , data : sjcl.codec.hex.toBits(data.toString('hex'))
          };
 }
