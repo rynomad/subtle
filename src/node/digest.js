@@ -1,6 +1,7 @@
 var forge = require("node-forge")
 var subtleToForge = {
-  "SHA-256" : "sha256"
+  "SHA-256" : "sha256",
+  "SHA-1"   : "sha1"
 }
 
 var digest = function digest(alg, data){
