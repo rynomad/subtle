@@ -1,4 +1,5 @@
 var forge = require("node-forge")
+  , ursa = require("ursa")
   , pkcsPad1  = new Buffer([48, 130])
   , pkcsPad2  = new Buffer([2, 1, 0, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 1, 5, 0, 4, 130])
 
@@ -35,7 +36,11 @@ function generate(algorithm){
     pos++;
   }
 
-  return forge.rsa.generateKeyPair({bits: algorithm.modulousLength , e: exp});
+  var keyPair = ursa.generatePrivateKey(algorithm.modulousLength, exp);
+  return {
+    privateKey: forge.pki.privateKeyFromPem(keyPair.toPrivatePem('utf8')),
+    publicKey: forge.pki.publicKeyFromPem(keyPair.toPublicPem('utf8'))
+  }
 }
 
 
