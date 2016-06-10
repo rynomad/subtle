@@ -1,5 +1,7 @@
 var ecc        = require("./ecc.node.js")
   , spkiECCPad = new Buffer("3059301306072a8648ce3d020106082a8648ce3d030107034200","hex");
+  , pkcsPad1   = new Buffer("308187020100301306072A8648CE3D020106082A8648CE3D030107046D306B0201010420", "hex")
+  , pkcsPad2   = new Buffer("A144034200", "hex");
 
 function getCurveKey(namedCurve){
   return ("sec" + namedCurve.replace(/-/g, '').toLowerCase() + "r1");
@@ -28,6 +30,19 @@ function raw_import(publicBytes, alg){
   return new ecc.ECKey(curve, publicBytes, true);
 }
 
+function pkcs8_import(privateBytes, algorithm) {
+  var curvekey = getCurveKey(algorithm.namedCurve)
+    , curve = ecc.ECCurves[curvekey];
+
+  curve.legacy = true;
+
+  return new ecc.ECKey(curve, privateBytes.slice(pkcsPad1.length, pkcsPad1.length + 32), false);
+}
+
+function pkcs8_export(Key) {
+  return Buffer.concat([pkcsPad1, Key.PrivateKey, pkcsPad2, raw_export(Key)]);
+}
+
 function generate(alg){
   var curvekey = getCurveKey(alg.namedCurve)
     , curve = ecc.ECCurves[curvekey];
@@ -40,7 +55,8 @@ function generate(alg){
 function ECC(Algorithm){
   var formats = Algorithm.formats
     , raw     = formats.raw
-    , spki    = formats.spki;
+    , spki    = formats.spki
+    , pkcs8   = formats.pkcs8;
 
   // attach common generator
   Algorithm.generate = generate;
@@ -51,6 +67,9 @@ function ECC(Algorithm){
 
   spki.import = spki_import;
   spki.export = spki_export;
+
+  pkcs8.import = pkcs8_import;
+  pkcs8.export = pkcs8_export;
 
   return;
 }
