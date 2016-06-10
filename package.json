@@ -35,7 +35,6 @@
     "ecc-qj" : "git+https://github.com/rynomad/ecc.git"
   },
   "devDependencies": {
-    "chext": "0.0.1",
     "glob": "^5.0.14",
     "gulp": "^3.9.0",
     "gulp-jsdoc": "^0.1.4",
