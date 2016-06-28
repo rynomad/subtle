@@ -35,7 +35,7 @@ function checkParams(format, algorithm, usages){
 
   if (!algorithm.hash) {
     algorith.hash = {name: 'SHA-1'}
-  } else if(!ALLOWED_HASH_ALGORITHMS.indexOf(algorithm.hash.name)){
+  } else if(ALLOWED_HASH_ALGORITHMS.indexOf(algorithm.hash.name) < 0){
     throw new Error("Unsupported or missing hash name");
   }
 
